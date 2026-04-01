@@ -1,0 +1,17 @@
+{
+  "name": "smart-lost-and-found",
+  "version": "1.0.0",
+  "description": "Smart Digital Lost & Found System for College Campuses",
+  "private": true,
+  "scripts": {
+    "start:backend": "cd backend && node server.js",
+    "start:frontend": "cd frontend && npm start",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm start",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "status": "echo 'Backend: http://localhost:5000' && echo 'Frontend: http://localhost:3002'"
+  },
+  "keywords": ["lost-and-found", "college", "smart-matching"],
+  "author": "",
+  "license": "ISC"
+}
