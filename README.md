@@ -63,13 +63,13 @@ lost-and-found/
 
 ### Setup & Installation
 
-#### 1️⃣ Clone Repository
+#### 1. Clone Repository
 ```bash
 git clone https://github.com/yourusername/lost-and-found.git
 cd lost-and-found
 ```
 
-#### 2️⃣ Backend Setup
+#### 2. Backend Setup
 ```bash
 cd backend
 npm install
@@ -92,13 +92,13 @@ CLOUDINARY_KEY=your_cloudinary_key
 CLOUDINARY_SECRET=your_cloudinary_secret
 ```
 
-#### 3️⃣ Frontend Setup
+#### 3. Frontend Setup
 ```bash
 cd frontend
 npm install
 ```
 
-#### 4️⃣ Start Application
+#### 4. Start Application
 
 **Terminal 1 - Backend:**
 ```bash
