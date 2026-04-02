@@ -9,9 +9,9 @@
 
 ## 🚀 Live Demo
 
-**[🌐 Open Live Website →](https://devops-lost-and-found.railway.app)**
+**Coming Soon!** 🎉
 
-Try it now! No installation required.
+See [QUICK_DEPLOY.md](QUICK_DEPLOY.md) for easy deployment steps.
 
 ---
 
