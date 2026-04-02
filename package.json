@@ -4,6 +4,7 @@
   "description": "Smart Digital Lost & Found System for College Campuses",
   "private": true,
   "scripts": {
+    "start": "node backend/server.js",
     "start:backend": "cd backend && node server.js",
     "start:frontend": "cd frontend && npm start",
     "backend:dev": "cd backend && npm run dev",
