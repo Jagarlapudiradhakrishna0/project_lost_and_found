@@ -1,0 +1,28 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          buildpack: "heroku/nodejs"
+        env:
+          HD_MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          HD_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          HD_CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+          HD_CLOUDINARY_KEY: ${{ secrets.CLOUDINARY_KEY }}
+          HD_CLOUDINARY_SECRET: ${{ secrets.CLOUDINARY_SECRET }}
+          HD_CLIENT_URL: ${{ secrets.CLIENT_URL }}
