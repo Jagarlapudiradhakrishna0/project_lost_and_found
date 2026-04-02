@@ -1,4 +1,4 @@
-const apiURL = 'http://localhost:5000/api';
+const apiURL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 export const register = (data) =>
   fetch(`${apiURL}/auth/register`, {
