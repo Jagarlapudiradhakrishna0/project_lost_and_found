@@ -8,28 +8,14 @@ const socketIo = require('socket.io');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
-// CORS Configuration for Vercel deployment
-const allowedOrigins = [
-  'https://lost2found.vercel.app',
-  'https://lostandfound-git-master-radha-krishnas-projects-9a2e031d.vercel.app',
-  'https://lostandfound-4u0dezpvy-radha-krishnas-projects-9a2e031d.vercel.app',
-  process.env.CLIENT_URL || 'http://localhost:3000', // Add env-based URL for flexibility
-];
-
 // Initialize app
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    origin: 'https://lost2found.vercel.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
   },
 });
 
@@ -38,32 +24,9 @@ connectDB();
 
 // Middleware - CORS must be before routes
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200,
-}));
-
-// Explicit OPTIONS handler for preflight requests
-app.options('*', cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200,
+  origin: 'https://lost2found.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
 
 app.use(express.json());
