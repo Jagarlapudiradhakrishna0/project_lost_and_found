@@ -201,7 +201,7 @@ export const getConversations = (token) =>
 
 // Mark items as received
 export const markLostItemAsReceived = (itemId, token) =>
-  fetch(`${apiURL}/lost-items/${itemId}/mark-received`, {
+  fetch(`${API_URL}/lost-items/${itemId}/mark-received`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ export const markLostItemAsReceived = (itemId, token) =>
   });
 
 export const markFoundItemAsReceived = (itemId, token) =>
-  fetch(`${apiURL}/found-items/${itemId}/mark-received`, {
+  fetch(`${API_URL}/found-items/${itemId}/mark-received`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -236,12 +236,12 @@ export const markFoundItemAsReceived = (itemId, token) =>
 
 // Match Management
 export const getMyMatches = (token) =>
-  fetch(`${apiURL}/matches`, {
+  fetch(`${API_URL}/matches`, {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 
 export const acceptMatch = (matchId, token) =>
-  fetch(`${apiURL}/matches/${matchId}/accept`, {
+  fetch(`${API_URL}/matches/${matchId}/accept`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -251,7 +251,7 @@ export const acceptMatch = (matchId, token) =>
   }).then((res) => res.json());
 
 export const confirmReturn = (matchId, token) =>
-  fetch(`${apiURL}/matches/${matchId}/confirm-return`, {
+  fetch(`${API_URL}/matches/${matchId}/confirm-return`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -261,7 +261,7 @@ export const confirmReturn = (matchId, token) =>
   }).then((res) => res.json());
 
 export const rejectMatch = (matchId, token) =>
-  fetch(`${apiURL}/matches/${matchId}/reject`, {
+  fetch(`${API_URL}/matches/${matchId}/reject`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -272,7 +272,7 @@ export const rejectMatch = (matchId, token) =>
 
 // Update Profile
 export const updateProfile = (data, token) =>
-  fetch(`${apiURL}/auth/profile`, {
+  fetch(`${API_URL}/auth/profile`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
