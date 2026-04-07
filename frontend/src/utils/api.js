@@ -1,5 +1,4 @@
-const apiURL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-
+const apiURL = "https://last-and-found-vnla.onrender.com/api";
 export const register = (data) =>
   fetch(`${apiURL}/auth/register`, {
     method: 'POST',
