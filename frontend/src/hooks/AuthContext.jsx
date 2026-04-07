@@ -1,6 +1,9 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Centralized API configuration
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -15,7 +18,7 @@ export const AuthProvider = ({ children }) => {
       const savedToken = localStorage.getItem('token');
       if (savedToken) {
         try {
-          const response = await fetch('http://localhost:5000/api/auth/profile', {
+          const response = await fetch(`${API_URL}/auth/profile`, {
             headers: { Authorization: `Bearer ${savedToken}` },
           });
           if (response.ok) {
@@ -38,7 +41,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const register = useCallback(async (data) => {
-    const response = await fetch('http://localhost:5000/api/auth/register', {
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -53,7 +56,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = useCallback(async (data) => {
-    const response = await fetch('http://localhost:5000/api/auth/login', {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),

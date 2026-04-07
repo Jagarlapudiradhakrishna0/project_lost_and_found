@@ -1,20 +1,22 @@
-const apiURL = "https://last-and-found-vnla.onrender.com/api";
+// Centralized API configuration
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
 export const register = (data) =>
-  fetch(`${apiURL}/auth/register`, {
+  fetch(`${API_URL}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }).then((res) => res.json());
 
 export const login = (data) =>
-  fetch(`${apiURL}/auth/login`, {
+  fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }).then((res) => res.json());
 
 export const getProfile = (token) =>
-  fetch(`${apiURL}/auth/profile`, {
+  fetch(`${API_URL}/auth/profile`, {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 
@@ -40,7 +42,7 @@ export const reportLostItem = (data, token) => {
     token: token ? 'present' : 'missing',
   });
 
-  return fetch(`${apiURL}/lost-items`, {
+  return fetch(`${API_URL}/lost-items`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` },
     body: formData,
@@ -61,11 +63,11 @@ export const reportLostItem = (data, token) => {
 
 export const getLostItems = (filters = {}) => {
   const params = new URLSearchParams(filters);
-  return fetch(`${apiURL}/lost-items?${params}`).then((res) => res.json());
+  return fetch(`${API_URL}/lost-items?${params}`).then((res) => res.json());
 };
 
 export const getLostItemById = (id) =>
-  fetch(`${apiURL}/lost-items/${id}`).then((res) => res.json());
+  fetch(`${API_URL}/lost-items/${id}`).then((res) => res.json());
 
 // Found Items
 export const reportFoundItem = (data, token) => {
@@ -90,7 +92,7 @@ export const reportFoundItem = (data, token) => {
     token: token ? 'present' : 'missing',
   });
 
-  return fetch(`${apiURL}/found-items`, {
+  return fetch(`${API_URL}/found-items`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` },
     body: formData,
@@ -110,20 +112,20 @@ export const reportFoundItem = (data, token) => {
 
 export const getFoundItems = (filters = {}) => {
   const params = new URLSearchParams(filters);
-  return fetch(`${apiURL}/found-items?${params}`).then((res) => res.json());
+  return fetch(`${API_URL}/found-items?${params}`).then((res) => res.json());
 };
 
 export const getFoundItemById = (id) =>
-  fetch(`${apiURL}/found-items/${id}`).then((res) => res.json());
+  fetch(`${API_URL}/found-items/${id}`).then((res) => res.json());
 
 // Matches
 export const findMatches = (itemId, type, token) =>
-  fetch(`${apiURL}/matches/find/${itemId}?type=${type}`, {
+  fetch(`${API_URL}/matches/find/${itemId}?type=${type}`, {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 
 export const createMatch = (data, token) =>
-  fetch(`${apiURL}/matches`, {
+  fetch(`${API_URL}/matches`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -133,13 +135,13 @@ export const createMatch = (data, token) =>
   }).then((res) => res.json());
 
 export const getMatches = (token) =>
-  fetch(`${apiURL}/matches`, {
+  fetch(`${API_URL}/matches`, {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 
 // Messages
 export const sendMessage = (data, token) =>
-  fetch(`${apiURL}/messages`, {
+  fetch(`${API_URL}/messages`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -149,18 +151,18 @@ export const sendMessage = (data, token) =>
   }).then((res) => res.json());
 
 export const getMessages = (matchId, token) =>
-  fetch(`${apiURL}/messages/${matchId}`, {
+  fetch(`${API_URL}/messages/${matchId}`, {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 
 // Notifications
 export const getNotifications = (token) =>
-  fetch(`${apiURL}/notifications`, {
+  fetch(`${API_URL}/notifications`, {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 
 export const markNotificationsAsRead = (notificationIds, token) =>
-  fetch(`${apiURL}/notifications/read-multiple`, {
+  fetch(`${API_URL}/notifications/read-multiple`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -171,7 +173,7 @@ export const markNotificationsAsRead = (notificationIds, token) =>
 
 // Direct Messages
 export const sendDirectMessage = (data, token) =>
-  fetch(`${apiURL}/direct-messages`, {
+  fetch(`${API_URL}/direct-messages`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -188,12 +190,12 @@ export const sendDirectMessage = (data, token) =>
   });
 
 export const getConversation = (otherUserId, token) =>
-  fetch(`${apiURL}/direct-messages/conversation?otherUserId=${otherUserId}`, {
+  fetch(`${API_URL}/direct-messages/conversation?otherUserId=${otherUserId}`, {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 
 export const getConversations = (token) =>
-  fetch(`${apiURL}/direct-messages`, {
+  fetch(`${API_URL}/direct-messages`, {
     headers: { Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 

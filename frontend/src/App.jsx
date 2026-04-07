@@ -3,6 +3,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import io from 'socket.io-client';
 
+// Centralized Socket configuration
+const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
+
 // Components
 import Navbar from './components/Navbar';
 import Modal from './components/Modal';
@@ -40,7 +43,7 @@ function App() {
   // Initialize Socket.io connection
   useEffect(() => {
     if (user && token) {
-      socket.current = io('http://localhost:5000', {
+      socket.current = io(SOCKET_URL, {
         auth: { token },
       });
 

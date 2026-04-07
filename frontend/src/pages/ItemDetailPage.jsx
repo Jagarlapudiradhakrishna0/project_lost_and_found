@@ -9,6 +9,9 @@ import Modal from '../components/Modal';
 import { getLostItemById, getFoundItemById, sendDirectMessage, markLostItemAsReceived, markFoundItemAsReceived } from '../utils/api';
 import { useAuth } from '../hooks/useAuth';
 
+// Centralized Backend URL for image serving
+const BACKEND_URL = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+
 const ItemDetailPage = () => {
   const { type, id } = useParams();
   const navigate = useNavigate();
@@ -146,7 +149,7 @@ const ItemDetailPage = () => {
                   className="space-y-4"
                 >
                   <img
-                    src={`http://localhost:5000${item.images[0].url}`}
+                    src={`${BACKEND_URL}${item.images[0].url}`}
                     alt={item.itemName}
                     className="w-full h-80 object-cover rounded-lg"
                     onError={(e) => {
@@ -159,7 +162,7 @@ const ItemDetailPage = () => {
                       {item.images.slice(1).map((img, idx) => (
                         <img
                           key={idx}
-                          src={`http://localhost:5000${img.url}`}
+                          src={`${BACKEND_URL}${img.url}`}
                           alt={`${item.itemName} ${idx + 2}`}
                           className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
                           onError={(e) => {
