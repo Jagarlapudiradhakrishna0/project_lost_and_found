@@ -22,6 +22,18 @@ build/
 .next/
 out/
 
+# Uploaded files (user content)
+backend/public/uploads/found-items/*.jpeg
+backend/public/uploads/found-items/*.jpg
+backend/public/uploads/found-items/*.png
+backend/public/uploads/lost-items/*.jpeg
+backend/public/uploads/lost-items/*.jpg
+backend/public/uploads/lost-items/*.png
+# Keep directory structure
+!backend/public/uploads/.gitkeep
+!backend/public/uploads/found-items/.gitkeep
+!backend/public/uploads/lost-items/.gitkeep
+
 # Logs
 logs/
 *.log
