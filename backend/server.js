@@ -150,6 +150,16 @@ io.on('connection', (socket) => {
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
+  if (process.env.MONGO_URI) {
+    console.log(`✅ MongoDB URI configured`);
+  } else {
+    console.warn(`⚠️ MONGO_URI not set in environment variables`);
+  }
+});
+
+server.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
   console.log(`🗄️  MongoDB connected to: ${process.env.MONGODB_URI}`);
 });
