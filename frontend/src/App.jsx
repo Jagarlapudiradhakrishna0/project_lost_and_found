@@ -21,7 +21,7 @@ import { useAuth } from './hooks/useAuth';
 import { getNotifications } from './utils/api';
 
 // Centralized Socket configuration
-const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
+const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'https://last-and-found-vnla.onrender.com';
 
 const ProtectedRoute = ({ children, isAuthenticated }) => {
   return isAuthenticated ? children : <Navigate to="/login" />;

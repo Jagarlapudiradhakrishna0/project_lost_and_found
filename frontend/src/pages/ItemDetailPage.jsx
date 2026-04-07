@@ -10,7 +10,7 @@ import { getLostItemById, getFoundItemById, sendDirectMessage, markLostItemAsRec
 import { useAuth } from '../hooks/useAuth';
 
 // Centralized Backend URL for image serving
-const BACKEND_URL = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const BACKEND_URL = process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://last-and-found-vnla.onrender.com';
 
 const ItemDetailPage = () => {
   const { type, id } = useParams();
