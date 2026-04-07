@@ -3,7 +3,16 @@ const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, rollNumber, department, year } = req.body;
+    const {
+      fullName,
+      email,
+      password,
+      rollNumber,
+      department,
+      year
+    } = req.body;
+
+    const name = fullName;
 
     // Validate input
     if (!name || !email || !password || !rollNumber) {
