@@ -50,8 +50,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Explicit preflight handler (VERY IMPORTANT)
-app.options('*', cors());
+// Explicit preflight handler (VERY IMPORTANT) - use same corsOptions
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
