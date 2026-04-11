@@ -132,103 +132,210 @@ Access the app at: **http://localhost:3000**
 
 ## 📦 Deployment
 
-### Option 1: Deploy to Heroku (Recommended)
+### 🌐 Deployment Stack: Render (Backend) + Vercel (Frontend) + MongoDB Atlas
 
-**Prerequisites:**
-- Heroku account: https://www.heroku.com
-- Heroku CLI installed
+This guide covers deploying the Lost & Found application using the recommended production-grade stack:
+- **Backend:** Render (Node.js/Express)
+- **Frontend:** Vercel (React)
+- **Database:** MongoDB Atlas (Cloud MongoDB)
 
-**Steps:**
+---
 
-1. **Login to Heroku:**
-```bash
-heroku login
+### Step 1: Set Up MongoDB Atlas (Database)
+
+**1.1 Create MongoDB Atlas Account:**
+- Go to https://www.mongodb.com/cloud/atlas
+- Sign up/Login with GitHub (recommended)
+- Create a new organization or use existing one
+
+**1.2 Create a Cluster:**
+- Click **+ Create a Deployment**
+- Choose **M0 Sandbox** (free tier) or higher
+- Select your preferred region (choose one closest to your users)
+- Click **Create Deployment**
+- Choose **Security Quickstart**
+  - Create a database user (save username & password)
+  - Add your IP address (or use 0.0.0.0 for development)
+  - Click **Finish & Close**
+
+**1.3 Get Connection String:**
+- Click **Databases** → Your cluster
+- Click **Connect** button
+- Select **Drivers**
+- Choose **Node.js** and version **4.0 or later**
+- Copy the connection string: `mongodb+srv://username:password@cluster.mongodb.net/myFirstDatabase`
+- Replace `myFirstDatabase` with: `lost-and-found`
+- Replace `username` and `password` with your created user credentials
+- Save this connection string securely
+
+**Connection String Format:**
 ```
-
-2. **Create Heroku app:**
-```bash
-heroku create your-app-name
-```
-
-3. **Set environment variables:**
-```bash
-heroku config:set MONGODB_URI=your_mongodb_connection_string
-heroku config:set JWT_SECRET=your_secret_key
-heroku config:set CLOUDINARY_NAME=your_name
-heroku config:set CLOUDINARY_KEY=your_key
-heroku config:set CLOUDINARY_SECRET=your_secret
-heroku config:set CLIENT_URL=https://your-app-name.herokuapp.com
-```
-
-4. **Deploy:**
-```bash
-git push heroku main
-```
-
-5. **View app:**
-```bash
-heroku open
+mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/lost-and-found?retryWrites=true&w=majority
 ```
 
 ---
 
-### Option 2: Deploy to Railway
+### Step 2: Deploy Backend to Render
 
-**Steps:**
+**2.1 Prepare Backend:**
+- Ensure your backend has a `server.js` file in the `backend/` directory
+- Verify `package.json` has a valid `start` script:
+```json
+"scripts": {
+  "start": "node server.js",
+  "dev": "nodemon server.js"
+}
+```
 
-1. Go to https://railway.app
-2. Sign up with GitHub
-3. Click **New Project** → **Deploy from GitHub**
-4. Select your repository
-5. Railway will automatically:
-   - Install dependencies
-   - Build the backend
-   - Deploy your app
-6. Add environment variables in Railway dashboard
-7. Get your live URL and update frontend API endpoint
+**2.2 Create Render Account & Deploy:**
+- Go to https://render.com
+- Sign up with GitHub
+- Click **New +** → **Web Service**
+- Connect your GitHub repository
+- Configure the service:
+  - **Name:** `lost-found-api` (or your preferred name)
+  - **Root Directory:** `backend/`
+  - **Environment:** `Node`
+  - **Build Command:** `npm install`
+  - **Start Command:** `npm start`
+  - **Instance Type:** Free (or Starter+ for production)
+
+**2.3 Set Environment Variables in Render:**
+- In your Render service dashboard, go to **Environment**
+- Add the following environment variables:
+```
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/lost-and-found?retryWrites=true&w=majority
+JWT_SECRET=your_super_secure_jwt_secret_key_minimum_32_characters
+PORT=5000
+NODE_ENV=production
+CLIENT_URL=https://your-frontend-vercel-url.vercel.app
+CLOUDINARY_NAME=your_cloudinary_name
+CLOUDINARY_KEY=your_cloudinary_api_key
+CLOUDINARY_SECRET=your_cloudinary_api_secret
+```
+
+**2.4 Deploy:**
+- Click **Deploy**
+- Wait for build to complete (2-5 minutes)
+- Once deployed, note your Render URL: `https://your-app-name.onrender.com`
+
+> ⚠️ **Note:** Free Render instances spin down after 15 minutes of inactivity. For production, upgrade to a paid plan.
 
 ---
 
-### Option 3: Deploy to AWS
+### Step 3: Deploy Frontend to Vercel
 
-**Using EC2 + RDS:**
-
-1. Launch EC2 instance (Ubuntu)
-2. SSH into instance
-3. Install Node.js and npm
-4. Clone repository
-5. Configure `.env` with RDS MongoDB URI
-6. Run `npm install && npm start`
-7. Use PM2 for process management:
+**3.1 Build Check:**
+- Ensure frontend builds successfully:
 ```bash
-npm install -g pm2
-pm2 start backend/server.js --name "lost-found-api"
-pm2 startup
-pm2 save
+cd frontend
+npm run build
 ```
 
-**Deploy Frontend to S3 + CloudFront:**
+**3.2 Create Vercel Account & Deploy:**
+- Go to https://vercel.com
+- Sign up with GitHub
+- Click **Add New...** → **Project**
+- Select your repository
+- Configure the project:
+  - **Framework Preset:** React
+  - **Root Directory:** `frontend/`
+  - **Build Command:** `npm run build`
+  - **Output Directory:** `build/`
 
-1. Build frontend: `npm run build`
-2. Upload `build/` folder to S3
-3. Create CloudFront distribution
-4. Update API URL in environment variables
+**3.3 Set Environment Variables in Vercel:**
+- In Vercel project dashboard, go to **Settings** → **Environment Variables**
+- Add:
+```
+REACT_APP_API_URL=https://your-app-name.onrender.com/api
+```
+- Click **Add** after each variable
+
+**3.4 Deploy:**
+- Click **Deploy**
+- Wait for build to complete (1-3 minutes)
+- Your frontend will be live at a URL like: `https://your-project-name.vercel.app`
 
 ---
 
-### Option 4: Docker Deployment
+### Step 4: Update Backend for Frontend URL
 
-**Build and run with Docker:**
+**4.1 Update CORS Configuration:**
+After frontend is deployed, update backend CORS settings:
 
-```bash
-# Backend
-docker build -t lost-found-backend ./backend
-docker run -p 5000:5000 --env-file backend/.env lost-found-backend
+In `backend/server.js` or your main Express app:
+```javascript
+const cors = require('cors');
 
-# Frontend
-docker build -t lost-found-frontend ./frontend
-docker run -p 3000:3000 lost-found-frontend
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  credentials: true
+}));
 ```
+
+In `backend/.env`:
+```
+CLIENT_URL=https://your-project-name.vercel.app
+```
+
+**4.2 Redeploy Backend:**
+- Push changes to GitHub (main branch)
+- Render will automatically detect and redeploy
+
+---
+
+### 🔗 Production Links
+
+After successful deployment, you'll have these URLs:
+
+| Service | URL Format | Example |
+|---------|-----------|---------|
+| **Frontend (Vercel)** | `https://<project-name>.vercel.app` | https://lost-found-app.vercel.app |
+| **Backend API (Render)** | `https://<app-name>.onrender.com` | https://lost-found-api.onrender.com |
+| **Database (MongoDB Atlas)** | Connection String | See MongoDB Atlas dashboard |
+
+> ✅ **Yes, you should include deployment links in your README!** This helps users and collaborators understand where the live application is hosted.
+
+---
+
+### 📋 Deployment Checklist
+
+- [ ] MongoDB Atlas cluster created and running
+- [ ] Backend `.env` configured with all required variables
+- [ ] Backend deployed to Render and receiving requests
+- [ ] Frontend `.env` configured with Render API URL
+- [ ] Frontend deployed to Vercel
+- [ ] CORS configured to accept Vercel frontend URL
+- [ ] Test API endpoints from Vercel frontend
+- [ ] Verify image uploads (Cloudinary) work in production
+- [ ] Check real-time features (Socket.io) work across domains
+- [ ] Monitor logs for errors in Render dashboard
+
+---
+
+### 🔧 Troubleshooting Deployment
+
+**Backend won't deploy on Render:**
+- Check that `backend/package.json` has a `start` script
+- Check for build errors in Render logs
+- Verify all environment variables are set correctly
+
+**Frontend can't connect to backend:**
+- Verify `REACT_APP_API_URL` is set correctly in Vercel
+- Check CORS settings in backend
+- Ensure backend is running (check Render dashboard)
+- Check browser console for CORS errors
+
+**MongoDB Atlas connection failing:**
+- Verify connection string is correct in `MONGODB_URI`
+- Check IP whitelist in MongoDB Atlas (needed for Render IP)
+- Ensure database user credentials are correct
+- Try connecting from MongoDB Compass to verify credentials
+
+**Images not uploading:**
+- Verify Cloudinary credentials in backend
+- Check Cloudinary account has sufficient quota
+- Review Cloudinary dashboard for upload errors
 
 ---
 
