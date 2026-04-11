@@ -13,10 +13,13 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: [
-      'https://lostandfound-6j9uvuqyh-radha-krishnas-projects-9a2e031d.vercel.app',
-      'https://lost2found.vercel.app'
-    ],
+    origin: (origin, callback) => {
+      if (!origin || origin.includes('vercel.app') || origin.includes('localhost')) {
+        callback(null, true);
+      } else {
+        callback(new Error('CORS blocked'));
+      }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   },
@@ -26,17 +29,26 @@ const io = socketIo(server, {
 connectDB();
 
 // Middleware - CORS must be before routes
-app.use(cors({
-  origin: [
-    'https://lostandfound-6j9uvuqyh-radha-krishnas-projects-9a2e031d.vercel.app',
-    'https://lost2found.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:5000'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:5000',
+    ];
+    
+    // Always allow if no origin (same-origin requests) or if in allowed list
+    if (!origin || allowedOrigins.includes(origin) || origin?.includes('vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS blocked'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
 
 // Explicit preflight handler (VERY IMPORTANT)
 app.options('*', cors());
