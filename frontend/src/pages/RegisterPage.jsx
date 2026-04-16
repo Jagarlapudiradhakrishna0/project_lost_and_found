@@ -9,7 +9,7 @@ import { useAuth } from '../hooks/useAuth';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    fullName: '',
     email: '',
     password: '',
     phone: '',
@@ -31,7 +31,7 @@ const RegisterPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.fullName.trim()) newErrors.fullName = 'Name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     if (formData.password.length < 6)
       newErrors.password = 'Password must be at least 6 characters';
@@ -90,12 +90,12 @@ const RegisterPage = () => {
             <GlassInput
               label="Full Name"
               type="text"
-              name="name"
+              name="fullName"
               placeholder="John Doe"
-              value={formData.name}
+              value={formData.fullName}
               onChange={handleChange}
               icon={User}
-              error={errors.name}
+              error={errors.fullName}
               required
             />
 
