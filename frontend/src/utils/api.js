@@ -1,5 +1,5 @@
-// Centralized API configuration
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// Centralized API configuration - Use relative paths for all environments
+const API_URL = '/api';
 
 export const register = (data) =>
   fetch(`${API_URL}/auth/register`, {

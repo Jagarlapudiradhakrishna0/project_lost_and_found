@@ -20,8 +20,8 @@ import MyItemsPage from './pages/MyItemsPage';
 import { useAuth } from './hooks/useAuth';
 import { getNotifications } from './utils/api';
 
-// Centralized Socket configuration
-const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
+// Centralized Socket configuration - Use current domain
+const SOCKET_URL = window.location.origin;
 
 const ProtectedRoute = ({ children, isAuthenticated }) => {
   return isAuthenticated ? children : <Navigate to="/login" />;
