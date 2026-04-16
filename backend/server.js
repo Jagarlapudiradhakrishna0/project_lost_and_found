@@ -22,22 +22,23 @@ const io = socketIo(server, {
 // Connect to MongoDB
 connectDB();
 
-// Middleware - CORS must be before routes
-const corsOptions = {
-  origin: (origin, callback) => {
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:5000',
-    ];
+// Middleware
+const path = require('path');
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload({ useTempFiles: true }));
+
+// CORS configuration
 app.use(cors({
   origin: "*",
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Explicit preflight handler
-app.options('*', cors(
-const path = require('path');
+// Preflight handler
+app.options('*', cors());
+
+// Static files
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Routes
@@ -128,6 +129,15 @@ io.on('connection', (socket) => {
       console.log('User disconnected:', socket.id);
     }
   });
+});
+
+// ✅ Serve frontend build
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// ✅ Catch-all route for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
 
 const PORT = process.env.PORT || 5000;

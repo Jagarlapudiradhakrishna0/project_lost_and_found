@@ -1,5 +1,5 @@
 // Centralized API configuration
-const API_URL = process.env.REACT_APP_API_URL || 'https://last-and-found-vnla.onrender.com/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 export const register = (data) =>
   fetch(`${API_URL}/auth/register`, {

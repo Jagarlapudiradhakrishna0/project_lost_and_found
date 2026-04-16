@@ -1,10 +1,11 @@
 {
-  "name": "smart-lost-and-found",
+  "name": "lost-found",
   "version": "1.0.0",
   "description": "Smart Digital Lost & Found System for College Campuses",
   "private": true,
   "scripts": {
-    "start": "npm run start:backend",
+    "start": "node backend/server.js",
+    "build": "cd frontend && npm install && npm run build",
     "start:backend": "cd backend && npm start",
     "start:frontend": "cd frontend && npm start",
     "dev": "npm run backend:dev",
