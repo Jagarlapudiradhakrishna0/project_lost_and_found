@@ -8,14 +8,20 @@ const socketIo = require('socket.io');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
+// Allowed origins for CORS
+const allowedOrigins = [
+  'https://lostandfound-1vzs.onrender.com',  // Production frontend
+  'http://localhost:3000',                    // Local development
+];
+
 // Initialize app
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "*",
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: false
+    credentials: true
   },
 });
 
@@ -28,15 +34,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload({ useTempFiles: true }));
 
-// CORS configuration
+// CORS configuration - Restrict to specific origins
 app.use(cors({
-  origin: "*",
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Preflight handler
 app.options('*', cors());
+
+console.log('🚀 Server starting with CORS origins:', allowedOrigins);
 
 // Static files
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
