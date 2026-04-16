@@ -53,7 +53,23 @@ app.use('/api/admin', require('./routes/admin'));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'Server is running' });
+  console.log('✅ Health check requested');
+  res.json({ 
+    status: 'Server is running',
+    timestamp: new Date().toISOString(),
+    mongoConnected: require('mongoose').connection.readyState === 1
+  });
+});
+
+// Debug: Test register endpoint
+app.post('/api/test-register', (req, res) => {
+  console.log('🧪 TEST REGISTER endpoint called');
+  console.log('Request body:', req.body);
+  res.json({ 
+    message: 'Test register working',
+    receivedData: req.body,
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Debug endpoint

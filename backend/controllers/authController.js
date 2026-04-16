@@ -3,6 +3,9 @@ const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
   try {
+    console.log('📝 REGISTER API HIT');
+    console.log('Request body:', req.body);
+    
     const {
       fullName,
       email,
@@ -16,16 +19,20 @@ exports.register = async (req, res) => {
 
     // Validate input
     if (!name || !email || !password || !rollNumber) {
+      console.log('❌ Missing fields:', { name, email, password, rollNumber });
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
     // Check if user exists
+    console.log('🔍 Checking if user exists:', email);
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log('❌ User already exists:', email);
       return res.status(400).json({ error: 'Email already registered' });
     }
 
     // Create new user
+    console.log('👤 Creating new user...');
     const user = new User({
       name,
       email,
@@ -36,15 +43,25 @@ exports.register = async (req, res) => {
       isVerified: true,
     });
 
+    console.log('💾 Saving user to database...');
     await user.save();
+    console.log('✅ User saved successfully:', user._id);
 
     // Generate token
+    if (!process.env.JWT_SECRET) {
+      console.error('❌ JWT_SECRET not set in environment variables!');
+      return res.status(500).json({ error: 'Server configuration error: JWT_SECRET not set' });
+    }
+    
+    console.log('🔐 Generating JWT token...');
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
+    console.log('✅ Token generated successfully');
 
+    console.log('📤 Sending registration response...');
     res.status(201).json({
       message: 'Registration successful',
       token,
@@ -56,8 +73,10 @@ exports.register = async (req, res) => {
         role: user.role,
       },
     });
+    console.log('✅ REGISTRATION COMPLETE');
   } catch (error) {
-    console.error("REGISTER ERROR:", error);
+    console.error("❌ REGISTER ERROR:", error.message);
+    console.error(error.stack);
     res.status(500).json({ error: error.message });
   }
 };
