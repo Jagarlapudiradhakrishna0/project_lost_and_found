@@ -18,6 +18,7 @@ import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
 import MyItemsPage from './pages/MyItemsPage';
 import AdminPage from './pages/AdminPage';
+import UIDemoPage from './pages/UIDemoPage';
 import { useAuth } from './hooks/useAuth';
 import { getNotifications } from './utils/api';
 
@@ -219,6 +220,10 @@ function App() {
                   <AdminPage />
                 </ProtectedRoute>
               }
+            />
+            <Route
+              path="/ui-demo"
+              element={<UIDemoPage />}
             />
 
             {/* Catch all */}
